@@ -1,0 +1,25 @@
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #002d3f;
+  }
+
+.background {
+  width:     448px;
+  height: 512px;
+  background-image: url('arcade_background_scaled.png');
+  background-repeat: no-repeat;
+}
+
+.player {
+    width: 32px;      /* Width of one sprite frame */
+  height: 32px;     /* Height of one sprite frame */
+  background-image: url('arcade_sprites_scaled.png'); /* Path to the sprite sheet */
+  background-repeat: no-repeat;
+  background-position: -2px -2px;
+  
+}
