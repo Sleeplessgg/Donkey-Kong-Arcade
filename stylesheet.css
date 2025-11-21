@@ -9,6 +9,7 @@ body {
   }
 
 .background {
+  display: absolute;
   width:     448px;
   height: 512px;
   background-image: url('arcade_background_scaled.png');
@@ -20,6 +21,8 @@ body {
   height: 32px;     /* Height of one sprite frame */
   background-image: url('arcade_sprites_scaled.png'); /* Path to the sprite sheet */
   background-repeat: no-repeat;
-  background-position: -2px -2px;
+  background-position : -2px -2px;
+  position: relative;
+  margin-left: 10px;
   
 }
