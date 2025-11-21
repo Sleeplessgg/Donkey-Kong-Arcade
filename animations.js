@@ -2,11 +2,19 @@ const spritePositions = ['-2px -2px','-38px -2px','-74px -2px','-110px -2px'];
 let i = 0;
 const player = document.querySelector('.player');
 function changeSprite() {
-    player.style.backgroundPosition = spritePositions[i];
-    i++;
-    if(i > 3) {
+    console.log(currentMovement);
+    if(currentMovement === null) {
+        console.log("jaaa!");
+        player.style.backgroundPosition = spritePositions[0];
         i = 0;
+    } else {
+        player.style.backgroundPosition = spritePositions[i];
+        i++;
+        if(i > 3) {
+        i = 0;
+        }
     }
+    
     
 }
 

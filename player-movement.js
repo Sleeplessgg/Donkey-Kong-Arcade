@@ -20,7 +20,7 @@ document.addEventListener("keydown", function (event) {
             currentMovement = "right";
             break;
     }
-    console.log(currentMovement);
+    //console.log(currentMovement);
 });
 
 document.addEventListener("keyup", function (event) {
@@ -43,7 +43,7 @@ document.addEventListener("keyup", function (event) {
             break;
     }
 
-    console.log(currentMovement);
+    //console.log(currentMovement);
 });
 
 function doMovement() {
@@ -54,18 +54,20 @@ function doMovement() {
         break;
     case "left":
         if(distance > 0) {
-            console.log("ja");
+            //console.log("ja");
             distance -= 1;
             player.style.marginLeft = distance  + "px";
             console.log(distance);
+            player.style.transform = "scaleX(-1)";
         }
         break;
     case "right":
-        if(distance < 448) {
-            console.log("ja");
+        if(distance < 448-32) {
+            //console.log("ja");
             distance += 1;
             player.style.marginLeft = distance  + "px";
-            console.log(distance);
+            player.style.transform = "scaleX(1)"; // flip image left/right
+            //console.log(distance);
         }
         break;
     default:
