@@ -1,4 +1,5 @@
 let currentMovement = null;
+let lastMovement = null;
 let distance = parseFloat(getComputedStyle(player).marginLeft); // removes '%'
 console.log(distance);
 document.addEventListener("keydown", function (event) {
@@ -49,8 +50,10 @@ document.addEventListener("keyup", function (event) {
 function doMovement() {
     switch(currentMovement) {
     case "up":
+        lastMovement = "up";
         break;
     case "down":
+        lastMovement = "down";
         break;
     case "left":
         if(distance > 0) {
@@ -60,15 +63,19 @@ function doMovement() {
             console.log(distance);
             player.style.transform = "scaleX(-1)";
         }
+        lastMovement = "left";
         break;
     case "right":
-        if(distance < 448-32) {
+        if(distance < 416) {
             //console.log("ja");
             distance += 1;
             player.style.marginLeft = distance  + "px";
             player.style.transform = "scaleX(1)"; // flip image left/right
             //console.log(distance);
         }
+        lastMovement = "right";
+        break;
+    case null:
         break;
     default:
         break;
