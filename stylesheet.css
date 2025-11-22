@@ -33,7 +33,8 @@ body {
   background-repeat: no-repeat;
   background-position : -2px -2px;
   position: absolute;
-  margin-left: 16px;
+  margin-top: 464px; /* starting margin for lvl 1 */
+  margin-left: 0px;
   transform: scaleX(1);
   
 }

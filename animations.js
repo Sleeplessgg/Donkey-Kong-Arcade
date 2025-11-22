@@ -3,12 +3,11 @@ const spriteStopPosition = ('-146px -2px');
 let i = 0;
 const player = document.querySelector('.player');
 function changeSprite() {
-    console.log(currentMovement);
+    //console.log(currentMovement);
     if(currentMovement === null && lastMovement !== null) {
         //console.log("jaaa!");
         player.style.backgroundPosition = spriteStopPosition;
         lastMovement = null;
-        
         i = 0;
     } else if(currentMovement === null) {
         //console.log("jaaa!");
