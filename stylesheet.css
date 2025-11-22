@@ -16,6 +16,16 @@ body {
   background-repeat: no-repeat;
 }
 
+.stage {
+  position: absolute;
+  width: 448px;
+  height: 512px;
+  background-image: url('arcade_stages_25_50_scaled.png');
+  background-repeat: no-repeat;
+  background-position : -16px -16px;
+
+  
+}
 .player {
   width: 32px;      /* Width of one sprite frame */
   height: 32px;     /* Height of one sprite frame */
