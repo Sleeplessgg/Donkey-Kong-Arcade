@@ -19,7 +19,7 @@ body {
 .player {
   width: 32px;      /* Width of one sprite frame */
   height: 32px;     /* Height of one sprite frame */
-  background-image: url('arcade_sprites_scaled_finished.png'); /* Path to the sprite sheet */
+  background-image: url('arcade_sprites_scaled.png'); /* Path to the sprite sheet */
   background-repeat: no-repeat;
   background-position : -2px -2px;
   position: absolute;
