@@ -1,17 +1,65 @@
 let currentMovement = null;
 let lastMovement = null;
-let stageBeam = 6;
+let stageBeam = 5;
 /* y_Pos is pixel pos -48 (16 for margin top + 32 for player height) */
 /*x_Pos is pixel pos -16 (16 for margin left)*/
 let beamCoordinates = [
-    [[0, 464], [208, 462], [240, 460], [272, 458], [304, 456], [336, 454], [368, 452], [400, 450]],
-    [[0, 384], [16, 386], [48, 388], [80, 390], [112, 392], [144, 394], [176, 396], [208, 398], [240, 400], [272, 402], [304, 404], [336, 406], [368, 408], [400, 410], [432, 412], [464, 414]],
-    [[0, 344], [16, 342], [48, 340], [80, 338], [112, 336], [144, 334], [176, 332], [208, 330], [240, 328], [272, 326], [304, 324], [336, 322], [368, 320], [400, 318], [432, 316], [464, 314]],
-    [[0, 252], [16, 254], [48, 256], [80, 258], [112, 260], [144, 262], [176, 264], [208, 266], [240, 268], [272, 270], [304, 272], [336, 274], [368, 276], [400, 278], [432, 280], [464, 282]],
-    [[0, 212], [16, 210], [48, 208], [80, 206], [112, 204], [144, 202], [176, 200], [208, 198], [240, 196], [272, 194], [304, 192], [336, 190], [368, 188], [400, 186], [432, 184], [464, 182]],
-    [[0, 136], [272, 138], [304, 140], [336, 142], [368, 144], [400, 146]],
-    [[160, 80]]
-]
+    // Row 0
+    [
+        [0, 464, false], [16, 464, false], [48, 464, false], [80, 464, false],
+        [112, 464, false], [144, 464, false], [176, 464, false], [208, 462, false],
+        [240, 460, false], [272, 458, false], [304, 456, false], [336, 454, false],
+        [368, 452, false], [400, 450, false]
+    ],
+    // Row 1
+    [
+        [0, 384, false], [16, 386, false], [48, 388, false], [80, 390, false],
+        [112, 392, false], [144, 394, false], [176, 396, false], [208, 398, false],
+        [240, 400, false], [272, 402, false], [304, 404, false], [336, 406, false],
+        [368, 408, false], [400, 410, true]
+    ],
+    // Row 2
+    [
+        [0, 344, true], [16, 342, false], [48, 340, false], [80, 338, false],
+        [112, 336, false], [144, 334, false], [176, 332, false], [208, 330, false],
+        [240, 328, false], [272, 326, false], [304, 324, false], [336, 322, false],
+        [368, 320, false], [400, 318, false]
+    ],
+    // Row 3
+    [
+        [0, 252, false], [16, 254, false], [48, 256, false], [80, 258, false],
+        [112, 260, false], [144, 262, false], [176, 264, false], [208, 266, false],
+        [240, 268, false], [272, 270, false], [304, 272, false], [336, 274, false],
+        [368, 276, false], [400, 278, true]
+    ],
+    // Row 4
+    [
+        [0, 212, true], [16, 210, false], [48, 208, false], [80, 206, false],
+        [112, 204, false], [144, 202, false], [176, 200, false], [208, 198, false],
+        [240, 196, false], [272, 194, false], [304, 192, false], [336, 190, false],
+        [368, 188, false], [400, 186, false]
+    ],
+    // Row 5
+    [
+        [0, 136, false], [16, 136, false], [48, 136, false], [80, 136, false],
+        [112, 136, false], [144, 136, false], [176, 136, false], [208, 136, false],
+        [240, 136, false], [272, 138, false], [304, 140, false], [336, 142, false],
+        [368, 144, false], [400, 146, true]
+    ],
+    // Row 6
+    [
+        [0, 80, false], [16, 80, false], [48, 80, false], [80, 80, false],
+        [112, 80, false], [144, 80, false], [160, 80, false], [208, 80, false],
+        [240, 80, false], [272, 80, false], [304, 80, false], [336, 80, false],
+        [368, 80, false], [400, 80, false]
+    ]
+];
+
+
+
+
+
+
 let x_Pos = parseFloat(getComputedStyle(player).marginLeft); // removes '%'
 //console.log(distance);
 document.addEventListener("keydown", function (event) {
@@ -61,6 +109,7 @@ document.addEventListener("keyup", function (event) {
 
 function doMovement() {
     x_Pos = parseFloat(getComputedStyle(player).marginLeft);
+    y_Pos = parseFloat(getComputedStyle(player).marginTop);
 
     switch(currentMovement) {
     case "up":
@@ -94,17 +143,25 @@ function doMovement() {
     default:
         break;
     }
-    calculatePosition(x_Pos);
+    calculatePosition(x_Pos, y_Pos);
 }
 
-function calculatePosition(x_Pos) {
+function calculatePosition(x_Pos, y_Pos) {
     /*console.log(parseFloat(getComputedStyle(player).marginTop));*/
     /*check which segment of the beam the player is on*/
     for(let i = beamCoordinates[stageBeam].length - 1; i >= 0; i--) {
         if(x_Pos >= beamCoordinates[stageBeam][i][0]) {
-
+            console.log(beamCoordinates[stageBeam][i]);
+            if(beamCoordinates[stageBeam][i][2]) {
+                console.log(beamCoordinates[stageBeam][i]);
+                if(y_Pos < beamCoordinates[stageBeam-1][i][1]) {
+                    y_Pos += 1;
+                    player.style.marginTop = y_Pos + "px";
+                } else {stageBeam -= 1;}
+                return
+            }
             player.style.marginTop = beamCoordinates[stageBeam][i][1] + "px";
-            break;
+            return;
         }
     }
     
