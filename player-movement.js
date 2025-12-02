@@ -149,9 +149,12 @@ function calculatePosition(x_Pos, y_Pos) {
             if(beamCoordinates[stageBeam][i][2]) {
                 console.log(beamCoordinates[stageBeam][i]);
                 if(y_Pos < beamCoordinates[stageBeam-1][i][1]) {
-                    y_Pos += 1;
+                    y_Pos += 1.25;
                     player.style.marginTop = y_Pos + "px";
-                } else {stageBeam -= 1;}
+                } else {
+                    y_Pos = beamCoordinates[stageBeam-1][i][1];
+                    player.style.marginTop = y_Pos + "px";
+                    stageBeam -= 1;}
                 return
             }
             player.style.marginTop = beamCoordinates[stageBeam][i][1] + "px";
@@ -160,4 +163,4 @@ function calculatePosition(x_Pos, y_Pos) {
     }
     
 }
-setInterval(doMovement, 10);
+setInterval(doMovement, 11);
