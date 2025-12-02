@@ -1,5 +1,4 @@
 let currentMovement = null;
-let lastMovement = null;
 let stageBeam = 5;
 /* y_Pos is pixel pos -48 (16 for margin top + 32 for player height) */
 /*x_Pos is pixel pos -16 (16 for margin left)*/
@@ -60,7 +59,7 @@ let beamCoordinates = [
 
 
 
-let x_Pos = parseFloat(getComputedStyle(player).marginLeft); // removes '%'
+let x_Pos = parseFloat(getComputedStyle(player).marginLeft); // takes px margin left
 //console.log(distance);
 document.addEventListener("keydown", function (event) {
     switch (event.key) {
@@ -113,30 +112,25 @@ function doMovement() {
 
     switch(currentMovement) {
     case "up":
-        lastMovement = "up";
         break;
     case "down":
-        lastMovement = "down";
         break;
     case "left":
         if(x_Pos > 0) {
-            //console.log("ja");
             x_Pos -= 1;
             player.style.marginLeft = x_Pos  + "px";
             //console.log(distance);
             player.style.transform = "scaleX(-1)";
         }
-        lastMovement = "left";
         break;
     case "right":
         if(x_Pos < 416) {
-            //console.log("ja");
+
             x_Pos += 1;
             player.style.marginLeft = x_Pos  + "px";
             player.style.transform = "scaleX(1)"; // flip image left/right
             //console.log(distance);
         }
-        lastMovement = "right";
         break;
     case null:
         break;
