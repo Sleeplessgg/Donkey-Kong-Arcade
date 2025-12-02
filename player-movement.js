@@ -1,5 +1,6 @@
 let currentMovement = null;
 let stageBeam = 5;
+let onLadder = false;
 /* y_Pos is pixel pos -48 (16 for margin top + 32 for player height) */
 /*x_Pos is pixel pos -16 (16 for margin left)*/
 let beamCoordinates = [
@@ -54,7 +55,8 @@ let beamCoordinates = [
     ]
 ];
 
-
+// format(x_pos, beamstage)
+let ladderCoordinates = [[352, 0], [48, 1], [176, 1], [208, 2], [352, 2], [48, 3], [128, 3], [352, 4], [112, 5], [144, 5], [240, 5], [112, 6], [144, 6], ]
 
 
 
@@ -109,14 +111,27 @@ document.addEventListener("keyup", function (event) {
 function doMovement() {
     x_Pos = parseFloat(getComputedStyle(player).marginLeft);
     y_Pos = parseFloat(getComputedStyle(player).marginTop);
-
+    let whichBeam = calculatePosition(x_Pos, y_Pos);
     switch(currentMovement) {
     case "up":
+        for(let i = 0; i <= ladderCoordinates.length - 1; i++) {
+            if(x_Pos >= (ladderCoordinates[i][0] - 2) && x_Pos <= (ladderCoordinates[i][0] + 18) && stageBeam == ladderCoordinates[i][1]) {
+                console.log("ladder here");
+                if(y_Pos > beamCoordinates[stageBeam + 1][whichBeam][1]) {
+                    onLadder = true;
+                    y_Pos -= 1;
+                    player.style.marginTop = y_Pos + "px";
+                } else {
+                onLadder = false;
+                stageBeam += 1;
+                }
+            }
+        }
         break;
     case "down":
         break;
     case "left":
-        if(x_Pos > 0) {
+        if(x_Pos > 0 && !onLadder) {
             x_Pos -= 1;
             player.style.marginLeft = x_Pos  + "px";
             //console.log(distance);
@@ -124,7 +139,7 @@ function doMovement() {
         }
         break;
     case "right":
-        if(x_Pos < 416) {
+        if(x_Pos < 416 && !onLadder) {
 
             x_Pos += 1;
             player.style.marginLeft = x_Pos  + "px";
@@ -137,7 +152,7 @@ function doMovement() {
     default:
         break;
     }
-    calculatePosition(x_Pos, y_Pos);
+    
 }
 
 function calculatePosition(x_Pos, y_Pos) {
@@ -145,9 +160,9 @@ function calculatePosition(x_Pos, y_Pos) {
     /*check which segment of the beam the player is on*/
     for(let i = beamCoordinates[stageBeam].length - 1; i >= 0; i--) {
         if(x_Pos >= beamCoordinates[stageBeam][i][0]) {
-            console.log(beamCoordinates[stageBeam][i]);
+            //console.log(beamCoordinates[stageBeam][i]);
             if(beamCoordinates[stageBeam][i][2]) {
-                console.log(beamCoordinates[stageBeam][i]);
+                //console.log(beamCoordinates[stageBeam][i]);
                 if(y_Pos < beamCoordinates[stageBeam-1][i][1]) {
                     y_Pos += 1.25;
                     player.style.marginTop = y_Pos + "px";
@@ -157,8 +172,13 @@ function calculatePosition(x_Pos, y_Pos) {
                     stageBeam -= 1;}
                 return
             }
-            player.style.marginTop = beamCoordinates[stageBeam][i][1] + "px";
-            return;
+            if(!onLadder) {
+                player.style.marginTop = beamCoordinates[stageBeam][i][1] + "px";
+                return i;
+            } else {
+                
+                return i;
+            }
         }
     }
     
