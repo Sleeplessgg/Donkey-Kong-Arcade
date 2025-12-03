@@ -56,7 +56,7 @@ let beamCoordinates = [
 ];
 
 // format(x_pos, beamstage)
-let ladderCoordinates = [[352, 0], [48, 1], [176, 1], [208, 2], [352, 2], [48, 3], [128, 3], [352, 4], [112, 5], [144, 5], [240, 5], [112, 6], [144, 6], ]
+let ladderCoordinates = [[352, 0], [48, 1], [176, 1], [208, 2], [352, 2], [48, 3], [128, 3], [352, 4], [112, 5], [144, 5], [240, 5],]
 
 
 
@@ -112,10 +112,26 @@ function doMovement() {
     x_Pos = parseFloat(getComputedStyle(player).marginLeft);
     y_Pos = parseFloat(getComputedStyle(player).marginTop);
     let whichBeam = calculatePosition(x_Pos, y_Pos);
+    let isAtLadder = false;
+    let isAboveLadder = false;
+
+    for(let i = 0; i <= ladderCoordinates.length - 1; i++) {
+        if(x_Pos >= (ladderCoordinates[i][0] - 2) && x_Pos <= (ladderCoordinates[i][0] + 18) && stageBeam == ladderCoordinates[i][1] && !onLadder) {
+            isAtLadder = true;
+        }
+
+
+        if((x_Pos >= (ladderCoordinates[i][0] - 2)) && (x_Pos <= (ladderCoordinates[i][0] + 18)) && (stageBeam-ladderCoordinates[i][1] == 1) && !onLadder) {
+            console.log("above ladder found");
+        isAboveLadder = true;
+        }
+
+    }
+    console.log("above ladder: " + isAboveLadder);
+    console.log("at ladder: "+ isAtLadder);
     switch(currentMovement) {
     case "up":
-        for(let i = 0; i <= ladderCoordinates.length - 1; i++) {
-            if(x_Pos >= (ladderCoordinates[i][0] - 2) && x_Pos <= (ladderCoordinates[i][0] + 18) && stageBeam == ladderCoordinates[i][1]) {
+        if(isAtLadder || onLadder) {
                 console.log("ladder here");
                 if(y_Pos > beamCoordinates[stageBeam + 1][whichBeam][1]) {
                     onLadder = true;
@@ -126,7 +142,6 @@ function doMovement() {
                 stageBeam += 1;
                 }
             }
-        }
         break;
     case "down":
         break;
