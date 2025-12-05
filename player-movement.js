@@ -125,10 +125,10 @@ function doMovement() {
             console.log("above ladder found");
         isAboveLadder = true;
         }
-
     }
-    console.log("above ladder: " + isAboveLadder);
-    console.log("at ladder: "+ isAtLadder);
+
+    //console.log("above ladder: " + isAboveLadder);
+    //console.log("at ladder: "+ isAtLadder);
     switch(currentMovement) {
     case "up":
         if(isAtLadder || onLadder) {
@@ -144,6 +144,18 @@ function doMovement() {
             }
         break;
     case "down":
+        if(isAboveLadder || onLadder) {
+            if(!onLadder) {
+                onLadder = true;
+                stageBeam -= 1;
+            }
+            if(y_Pos < beamCoordinates[stageBeam][whichBeam][1]) {
+                y_Pos += 1;
+                player.style.marginTop = y_Pos + "px";
+            } else {
+                onLadder = false;
+            }
+        }
         break;
     case "left":
         if(x_Pos > 0 && !onLadder) {
