@@ -1,6 +1,10 @@
-let currentMovement = null;
+let currentHorizontalMovement = null;
+let currentVerticalMovement = null;
 let stageBeam = 5;
 let onLadder = false;
+let inJump = false;
+let jumpFrame = 0;
+let hasLanded = false;
 /* y_Pos is pixel pos -48 (16 for margin top + 32 for player height) */
 /*x_Pos is pixel pos -16 (16 for margin left)*/
 let beamCoordinates = [
@@ -67,45 +71,45 @@ document.addEventListener("keydown", function (event) {
     switch (event.key) {
         case "ArrowUp":
             
-            currentMovement = "up";
+            currentVerticalMovement = "up";
             break;
         case "ArrowDown":
             
-            currentMovement = "down";
+            currentVerticalMovement = "down";
             break;
         case "ArrowLeft":
             
-            currentMovement = "left";
+            currentHorizontalMovement = "left";
             break;
         case "ArrowRight":
             
-            currentMovement = "right";
+            currentHorizontalMovement = "right";
             break;
     }
-    //console.log(currentMovement);
+    //console.log(currentHorizontalMovement);
 });
 
 document.addEventListener("keyup", function (event) {
     switch (event.key) {
         case "ArrowUp":
             
-            currentMovement = null;
+            currentVerticalMovement = null;
             break;
         case "ArrowDown":
             
-            currentMovement = null;
+            currentVerticalMovement = null;
             break;
         case "ArrowLeft":
            
-            currentMovement = null;
+            currentHorizontalMovement = null;
             break;
         case "ArrowRight":
             
-            currentMovement = null;
+            currentHorizontalMovement = null;
             break;
     }
 
-    //console.log(currentMovement);
+    //console.log(currentHorizontalMovement);
 });
 
 function doMovement() {
@@ -129,19 +133,25 @@ function doMovement() {
 
     //console.log("above ladder: " + isAboveLadder);
     //console.log("at ladder: "+ isAtLadder);
-    switch(currentMovement) {
+    switch(currentVerticalMovement) {
     case "up":
+        // FOR USING LADDERS
         if(isAtLadder || onLadder) {
-                console.log("ladder here");
-                if(y_Pos > beamCoordinates[stageBeam + 1][whichBeam][1]) {
-                    onLadder = true;
-                    y_Pos -= 1;
-                    player.style.marginTop = y_Pos + "px";
-                } else {
+            console.log("ladder here");
+            if(y_Pos > beamCoordinates[stageBeam + 1][whichBeam][1]) {
+                onLadder = true;
+                y_Pos -= 1;
+                player.style.marginTop = y_Pos + "px";
+            } else {
                 onLadder = false;
                 stageBeam += 1;
-                }
             }
+        }
+
+        // FOR JUMPING
+        if(!onLadder && !isAtLadder && !inJump) {
+            inJump = true;
+        }
         break;
     case "down":
         if(isAboveLadder || onLadder) {
@@ -157,6 +167,13 @@ function doMovement() {
             }
         }
         break;
+    case null:
+        break;
+    default:
+        break;
+    }
+    
+    switch(currentHorizontalMovement) {
     case "left":
         if(x_Pos > 0 && !onLadder) {
             x_Pos -= 1;
@@ -179,7 +196,28 @@ function doMovement() {
     default:
         break;
     }
-    
+
+    // JUMP LOGIC
+    if(inJump) {
+        jumpFrame += 1;
+        if(jumpFrame < 20) {
+            y_Pos -= 1.5;
+            player.style.marginTop = y_Pos + "px";
+        }
+        if(jumpFrame >= 20 && jumpFrame < 30) {
+            y_Pos -= 0.5;
+            player.style.marginTop = y_Pos + "px";
+        }
+        if(jumpFrame >= 30) {
+            if(y_Pos < beamCoordinates[stageBeam][whichBeam][1]) {
+                y_Pos += 1.25;
+                player.style.marginTop = y_Pos + "px";
+            } else {
+                inJump = false;
+                jumpFrame = 0;
+            }
+        }
+    }
 }
 
 function calculatePosition(x_Pos, y_Pos) {
